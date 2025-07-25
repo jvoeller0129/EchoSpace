@@ -83,9 +83,24 @@ function ARView({
       
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
-        await videoRef.current.play();
-        setIsARActive(true);
-        console.log('AR camera started successfully');
+        
+        // Wait for metadata to load
+        videoRef.current.onloadedmetadata = () => {
+          console.log('Video metadata loaded');
+          videoRef.current?.play().then(() => {
+            console.log('Video playback started');
+            setIsARActive(true);
+            console.log('AR camera started successfully');
+          }).catch(error => {
+            console.error('Video play failed:', error);
+            setError('Failed to start video playback');
+          });
+        };
+        
+        videoRef.current.onerror = (error) => {
+          console.error('Video error:', error);
+          setError('Video playback error');
+        };
       }
 
       // Setup device orientation
@@ -107,7 +122,8 @@ function ARView({
         }
       }
       
-      alert(errorMessage);
+      setError(errorMessage);
+      setIsLoading(false);
     }
   };
 
@@ -266,7 +282,13 @@ function ARView({
   const handleStartAR = async () => {
     setIsLoading(true);
     setError(null);
-    await startAR();
+    console.log('Starting AR with loading state...');
+    try {
+      await startAR();
+    } catch (error) {
+      console.error('AR start failed:', error);
+      setError('Failed to start AR camera');
+    }
     setIsLoading(false);
   };
 
@@ -310,7 +332,14 @@ function ARView({
         className="absolute inset-0 w-full h-full object-cover"
         playsInline
         muted
+        autoPlay
+        style={{ transform: 'scaleX(-1)' }} // Mirror effect for front-facing feel
       />
+      
+      {/* Debug overlay */}
+      <div className="absolute top-2 left-2 bg-black/50 text-white text-xs p-2 rounded">
+        Camera Active: {isARActive ? 'Yes' : 'No'}
+      </div>
       
       {/* AR Overlays */}
       <div className="absolute inset-0 pointer-events-none">
