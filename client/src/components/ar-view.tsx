@@ -29,6 +29,8 @@ function ARView({
   const [deviceOrientation, setDeviceOrientation] = useState({ alpha: 0, beta: 0, gamma: 0 });
   const [nearbyFragments, setNearbyFragments] = useState<FragmentWithAR[]>([]);
   const [isCreating, setIsCreating] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   // Calculate distance between two points
   const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number) => {
@@ -61,45 +63,93 @@ function ARView({
   // Start AR camera
   const startAR = async () => {
     try {
+      // Check if getUserMedia is supported
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        alert('Camera not supported on this device/browser');
+        return;
+      }
+
+      console.log('Requesting camera access...');
+      
       const stream = await navigator.mediaDevices.getUserMedia({
         video: { 
           facingMode: 'environment',
-          width: { ideal: 1280 },
-          height: { ideal: 720 }
+          width: { ideal: 1280, min: 640 },
+          height: { ideal: 720, min: 480 }
         }
       });
       
+      console.log('Camera access granted');
+      
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
-        videoRef.current.play();
+        await videoRef.current.play();
         setIsARActive(true);
+        console.log('AR camera started successfully');
       }
 
+      // Setup device orientation
+      setupDeviceOrientation();
+      
+    } catch (error) {
+      console.error('Camera access error:', error);
+      
+      let errorMessage = 'Unable to access camera. ';
+      if (error instanceof Error) {
+        if (error.name === 'NotAllowedError') {
+          errorMessage += 'Please grant camera permission and try again.';
+        } else if (error.name === 'NotFoundError') {
+          errorMessage += 'No camera found on this device.';
+        } else if (error.name === 'NotSupportedError') {
+          errorMessage += 'Camera not supported on this browser.';
+        } else {
+          errorMessage += error.message;
+        }
+      }
+      
+      alert(errorMessage);
+    }
+  };
+
+  // Setup device orientation with better error handling
+  const setupDeviceOrientation = async () => {
+    try {
       // Request device orientation permission on iOS
       if ('DeviceOrientationEvent' in window && typeof (DeviceOrientationEvent as any).requestPermission === 'function') {
         const permission = await (DeviceOrientationEvent as any).requestPermission();
         if (permission === 'granted') {
           window.addEventListener('deviceorientation', handleOrientation);
+          console.log('Device orientation permission granted');
+        } else {
+          console.warn('Device orientation permission denied');
         }
       } else {
+        // Android and other devices
         window.addEventListener('deviceorientation', handleOrientation);
+        console.log('Device orientation listener added');
       }
     } catch (error) {
-      console.error('Error accessing camera:', error);
-      alert('Unable to access camera. Please ensure you have granted camera permissions.');
+      console.warn('Device orientation setup failed:', error);
+      // Continue without device orientation - AR will still work with manual positioning
     }
   };
 
   // Stop AR camera
   const stopAR = () => {
+    console.log('Stopping AR camera...');
     if (videoRef.current?.srcObject) {
       const stream = videoRef.current.srcObject as MediaStream;
-      stream.getTracks().forEach(track => track.stop());
+      stream.getTracks().forEach(track => {
+        track.stop();
+        console.log('Stopped camera track:', track.kind);
+      });
       videoRef.current.srcObject = null;
     }
     setIsARActive(false);
     setIsCreating(false);
+    setError(null);
     window.removeEventListener('deviceorientation', handleOrientation);
+    console.log('AR camera stopped');
   };
 
   // Handle device orientation changes
@@ -213,6 +263,13 @@ function ARView({
     }
   };
 
+  const handleStartAR = async () => {
+    setIsLoading(true);
+    setError(null);
+    await startAR();
+    setIsLoading(false);
+  };
+
   if (!isARActive) {
     return (
       <div className="flex flex-col items-center justify-center h-full bg-gray-50 p-8">
@@ -221,10 +278,26 @@ function ARView({
         <p className="text-gray-600 text-center mb-6">
           Point your camera at the world to discover nearby story fragments in augmented reality
         </p>
-        <Button onClick={startAR} size="lg" className="flex items-center gap-2">
+        
+        {error && (
+          <div className="bg-red-50 border border-red-200 rounded-lg p-3 mb-4 max-w-sm">
+            <p className="text-red-700 text-sm">{error}</p>
+          </div>
+        )}
+        
+        <Button 
+          onClick={handleStartAR} 
+          size="lg" 
+          className="flex items-center gap-2"
+          disabled={isLoading}
+        >
           <Camera className="w-5 h-5" />
-          Start AR View
+          {isLoading ? 'Starting Camera...' : 'Start AR View'}
         </Button>
+        
+        <div className="mt-6 text-xs text-gray-500 text-center max-w-xs">
+          <p>This requires camera permission. Make sure to allow camera access when prompted.</p>
+        </div>
       </div>
     );
   }
