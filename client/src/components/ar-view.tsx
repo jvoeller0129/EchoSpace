@@ -84,23 +84,43 @@ function ARView({
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
         
+        // Set video attributes
+        videoRef.current.autoplay = true;
+        videoRef.current.playsInline = true;
+        videoRef.current.muted = true;
+        
         // Wait for metadata to load
         videoRef.current.onloadedmetadata = () => {
           console.log('Video metadata loaded');
-          videoRef.current?.play().then(() => {
-            console.log('Video playback started');
-            setIsARActive(true);
-            console.log('AR camera started successfully');
-          }).catch(error => {
-            console.error('Video play failed:', error);
-            setError('Failed to start video playback');
-          });
+          if (videoRef.current) {
+            videoRef.current.play().then(() => {
+              console.log('Video playback started');
+              setIsARActive(true);
+              console.log('AR camera started successfully');
+            }).catch(error => {
+              console.error('Video play failed:', error);
+              setError('Failed to start video playback: ' + error.message);
+            });
+          }
         };
         
         videoRef.current.onerror = (error) => {
           console.error('Video error:', error);
           setError('Video playback error');
         };
+        
+        // Try to play immediately as well
+        setTimeout(() => {
+          if (videoRef.current && videoRef.current.readyState >= 2) {
+            console.log('Attempting immediate video play...');
+            videoRef.current.play().then(() => {
+              console.log('Immediate video play succeeded');
+              setIsARActive(true);
+            }).catch(error => {
+              console.log('Immediate play failed, waiting for metadata:', error.message);
+            });
+          }
+        }, 100);
       }
 
       // Setup device orientation
@@ -307,6 +327,13 @@ function ARView({
           </div>
         )}
         
+        {/* Debug status */}
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4 max-w-sm text-center">
+          <p className="text-blue-700 text-sm">
+            Status: {isLoading ? 'Loading...' : isARActive ? 'Camera Active' : 'Ready to start'}
+          </p>
+        </div>
+        
         <Button 
           onClick={handleStartAR} 
           size="lg" 
@@ -336,9 +363,14 @@ function ARView({
         style={{ transform: 'scaleX(-1)' }} // Mirror effect for front-facing feel
       />
       
-      {/* Debug overlay */}
-      <div className="absolute top-2 left-2 bg-black/50 text-white text-xs p-2 rounded">
-        Camera Active: {isARActive ? 'Yes' : 'No'}
+      {/* Debug overlay - More visible */}
+      <div className="absolute top-4 left-4 bg-green-500 text-white text-sm font-bold p-3 rounded-lg shadow-lg">
+        📹 AR CAMERA ACTIVE
+      </div>
+      
+      {/* Video status overlay */}
+      <div className="absolute top-4 right-4 bg-black/70 text-white text-xs p-2 rounded">
+        Video Ready: {videoRef.current?.readyState || 'Loading'}
       </div>
       
       {/* AR Overlays */}
