@@ -93,7 +93,10 @@ function ARView({
         video.setAttribute('playsinline', 'true');
         
         console.log('Assigning camera stream to video element');
+        console.log('Video element exists:', !!video);
+        console.log('Stream tracks:', stream.getTracks().length);
         video.srcObject = stream;
+        console.log('Stream assigned to video element');
         
         // Multiple approaches to start video playback
         const tryPlayVideo = async () => {
@@ -128,11 +131,26 @@ function ARView({
         console.log('Setting AR active - camera stream available');
         setIsARActive(true);
         
+        // Debug video element state
+        console.log('Video element debug:');
+        console.log('- readyState:', video.readyState);
+        console.log('- paused:', video.paused);
+        console.log('- muted:', video.muted);
+        console.log('- autoplay:', video.autoplay);
+        console.log('- playsInline:', video.playsInline);
+        
         // Final fallback with longer delay
         setTimeout(() => {
           console.log('Final AR activation check');
+          console.log('Video state after delay:', {
+            readyState: video.readyState,
+            paused: video.paused,
+            hasStream: !!video.srcObject,
+            videoWidth: video.videoWidth,
+            videoHeight: video.videoHeight
+          });
           if (video.srcObject) {
-            console.log('Stream exists, activating AR');
+            console.log('Stream exists, ensuring AR active');
             setIsARActive(true);
           }
         }, 1000);
@@ -399,6 +417,8 @@ function ARView({
         <div>Ready: {videoRef.current?.readyState || 0}</div>
         <div>Paused: {videoRef.current?.paused ? 'Yes' : 'No'}</div>
         <div>Stream: {videoRef.current?.srcObject ? 'Yes' : 'No'}</div>
+        <div>Size: {videoRef.current?.videoWidth || 0}x{videoRef.current?.videoHeight || 0}</div>
+        <div>Playing: {videoRef.current && !videoRef.current.paused && videoRef.current.readyState > 2 ? 'Yes' : 'No'}</div>
       </div>
       
       {/* Fallback if video doesn't show - debugging */}
