@@ -82,53 +82,60 @@ function ARView({
       console.log('Camera access granted');
       
       if (videoRef.current) {
-        videoRef.current.srcObject = stream;
+        const video = videoRef.current;
         
-        // Set video attributes
-        videoRef.current.autoplay = true;
-        videoRef.current.playsInline = true;
-        videoRef.current.muted = true;
+        // Set all video properties before assigning stream
+        video.autoplay = true;
+        video.playsInline = true;
+        video.muted = true;
+        video.controls = false;
+        video.setAttribute('webkit-playsinline', 'true');
+        video.setAttribute('playsinline', 'true');
         
-        // Wait for metadata to load
-        videoRef.current.onloadedmetadata = () => {
-          console.log('Video metadata loaded');
-          if (videoRef.current) {
-            videoRef.current.play().then(() => {
-              console.log('Video playback started');
-              setIsARActive(true);
-              console.log('AR camera started successfully');
-            }).catch(error => {
-              console.error('Video play failed:', error);
-              setError('Failed to start video playback: ' + error.message);
-            });
+        console.log('Assigning camera stream to video element');
+        video.srcObject = stream;
+        
+        // Multiple approaches to start video playback
+        const tryPlayVideo = async () => {
+          try {
+            console.log('Attempting to play video...');
+            await video.play();
+            console.log('Video playback successful');
+            setIsARActive(true);
+            return true;
+          } catch (error) {
+            console.log('Video play attempt failed:', error);
+            return false;
           }
         };
         
-        videoRef.current.onerror = (error) => {
-          console.error('Video error:', error);
-          setError('Video playback error');
+        // Try immediate play
+        tryPlayVideo();
+        
+        // Also try on loadedmetadata event
+        video.onloadedmetadata = () => {
+          console.log('Video metadata loaded');
+          tryPlayVideo();
         };
         
-        // Force set AR active immediately when camera stream is available
-        console.log('Setting AR active immediately after camera access');
+        // Try on canplay event
+        video.oncanplay = () => {
+          console.log('Video can play');
+          tryPlayVideo();
+        };
+        
+        // Force AR active regardless of video play success
+        console.log('Setting AR active - camera stream available');
         setIsARActive(true);
         
-        // Also try after a short delay as backup
+        // Final fallback with longer delay
         setTimeout(() => {
-          if (videoRef.current && videoRef.current.srcObject) {
-            console.log('Video element has stream, ensuring AR is active');
-            console.log('Video readyState:', videoRef.current.readyState);
-            console.log('Video paused:', videoRef.current.paused);
+          console.log('Final AR activation check');
+          if (video.srcObject) {
+            console.log('Stream exists, activating AR');
             setIsARActive(true);
-            
-            // Try to play if not already playing
-            if (videoRef.current.paused) {
-              videoRef.current.play().catch(error => {
-                console.log('Play attempt failed:', error.message);
-              });
-            }
           }
-        }, 100);
+        }, 1000);
       }
 
       // Setup device orientation
@@ -368,22 +375,41 @@ function ARView({
       {/* Camera feed */}
       <video
         ref={videoRef}
-        className="absolute inset-0 w-full h-full object-cover"
-        playsInline
-        muted
-        autoPlay
-        style={{ transform: 'scaleX(-1)' }} // Mirror effect for front-facing feel
+        className="absolute inset-0 w-full h-full object-cover bg-black"
+        playsInline={true}
+        autoPlay={true}
+        muted={true}
+        controls={false}
+        webkit-playsinline="true"
+        style={{ 
+          transform: 'scaleX(-1)',
+          objectFit: 'cover',
+          width: '100%',
+          height: '100%'
+        }}
       />
       
       {/* Debug overlay - More visible */}
-      <div className="absolute top-4 left-4 bg-green-500 text-white text-sm font-bold p-3 rounded-lg shadow-lg">
+      <div className="absolute top-4 left-4 bg-green-500 text-white text-sm font-bold p-3 rounded-lg shadow-lg z-50">
         📹 AR CAMERA ACTIVE
       </div>
       
       {/* Video status overlay */}
-      <div className="absolute top-4 right-4 bg-black/70 text-white text-xs p-2 rounded">
-        Video Ready: {videoRef.current?.readyState || 'Loading'}
+      <div className="absolute top-4 right-4 bg-black/70 text-white text-xs p-2 rounded z-40">
+        <div>Ready: {videoRef.current?.readyState || 0}</div>
+        <div>Paused: {videoRef.current?.paused ? 'Yes' : 'No'}</div>
+        <div>Stream: {videoRef.current?.srcObject ? 'Yes' : 'No'}</div>
       </div>
+      
+      {/* Fallback if video doesn't show - debugging */}
+      {!videoRef.current?.srcObject && (
+        <div className="absolute inset-0 bg-gray-800 flex items-center justify-center text-white">
+          <div className="text-center">
+            <div className="text-2xl mb-2">🔄</div>
+            <div>Initializing Camera...</div>
+          </div>
+        </div>
+      )}
       
       {/* AR Overlays */}
       <div className="absolute inset-0 pointer-events-none">
