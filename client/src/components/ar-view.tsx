@@ -3,6 +3,11 @@ import { Button } from "@/components/ui/button";
 import { Camera, MapPin, Plus } from "lucide-react";
 import type { Fragment } from "@shared/schema";
 
+type FragmentWithAR = Fragment & {
+  distance: number;
+  bearing: number;
+};
+
 interface ARViewProps {
   fragments: Fragment[];
   currentLocation: { lat: number; lng: number } | null;
@@ -10,7 +15,9 @@ interface ARViewProps {
   onCreateFragment: (location: { lat: number; lng: number }) => void;
 }
 
-export function ARView({ 
+export { ARView };
+
+function ARView({ 
   fragments, 
   currentLocation, 
   onFragmentSelect, 
@@ -20,7 +27,7 @@ export function ARView({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isARActive, setIsARActive] = useState(false);
   const [deviceOrientation, setDeviceOrientation] = useState({ alpha: 0, beta: 0, gamma: 0 });
-  const [nearbyFragments, setNearbyFragments] = useState<Fragment[]>([]);
+  const [nearbyFragments, setNearbyFragments] = useState<FragmentWithAR[]>([]);
   const [isCreating, setIsCreating] = useState(false);
 
   // Calculate distance between two points
@@ -129,7 +136,7 @@ export function ARView({
         fragment.latitude,
         fragment.longitude
       );
-      return { ...fragment, distance, bearing };
+      return { ...fragment, distance, bearing } as FragmentWithAR;
     });
 
     setNearbyFragments(nearby);

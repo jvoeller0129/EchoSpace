@@ -5,9 +5,10 @@ import MapContainer from "@/components/map-container";
 import DiscoveryPanel from "@/components/discovery-panel";
 import FragmentDetailPanel from "@/components/fragment-detail-panel";
 import CreateFragmentModal from "@/components/create-fragment-modal";
+import { ARView } from "@/components/ar-view";
 import MobileTabBar from "@/components/mobile-tab-bar";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { MapPin, User, Navigation } from "lucide-react";
+import { MapPin, User, Navigation, Camera } from "lucide-react";
 
 export default function Home() {
   const [selectedFragment, setSelectedFragment] = useState<Fragment | null>(null);
@@ -117,6 +118,18 @@ export default function Home() {
               </span>
             </button>
 
+            {/* AR Button - Desktop only */}
+            {!isMobile && (
+              <button
+                onClick={() => setActiveTab("ar")}
+                className="flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600"
+                data-testid="button-ar-view"
+              >
+                <Camera className="w-4 h-4" />
+                <span className="hidden sm:inline">AR View</span>
+              </button>
+            )}
+
             <button
               className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center hover:bg-gray-300 transition-colors"
               data-testid="button-profile"
@@ -129,13 +142,30 @@ export default function Home() {
 
       {/* Main Content */}
       <main className="flex-1 relative">
-        {/* Map Container */}
-        <MapContainer
-          fragments={fragmentsWithDistance}
-          currentLocation={currentLocation}
-          onFragmentSelect={handleFragmentSelect}
-          selectedFragment={selectedFragment}
-        />
+        {/* Map Container - Default view */}
+        {(!isMobile || activeTab === "map") && activeTab !== "ar" && (
+          <MapContainer
+            fragments={fragmentsWithDistance}
+            currentLocation={currentLocation}
+            onFragmentSelect={handleFragmentSelect}
+            selectedFragment={selectedFragment}
+          />
+        )}
+
+        {/* AR View - Full screen for desktop when AR is active */}
+        {activeTab === "ar" && (
+          <div className="absolute inset-0 z-20">
+            <ARView
+              fragments={fragments}
+              currentLocation={currentLocation}
+              onFragmentSelect={handleFragmentSelect}
+              onCreateFragment={(location) => {
+                setCurrentLocation(location);
+                setIsCreateModalOpen(true);
+              }}
+            />
+          </div>
+        )}
 
         {/* Discovery Panel - Hidden on mobile when not on discovery tab */}
         {(!isMobile || activeTab === "discover") && (
@@ -148,6 +178,80 @@ export default function Home() {
             onCategoryChange={setSelectedCategory}
             isLoading={isLoading}
           />
+        )}
+
+
+
+        {/* Fragments List - Mobile fragments tab */}
+        {isMobile && activeTab === "fragments" && (
+          <div className="absolute inset-0 z-10 bg-white overflow-y-auto">
+            <div className="p-4">
+              <h2 className="text-lg font-semibold text-gray-800 mb-4">All Fragments</h2>
+              <div className="space-y-3">
+                {fragmentsWithDistance.map((fragment) => (
+                  <div
+                    key={fragment.id}
+                    onClick={() => handleFragmentSelect(fragment)}
+                    className="bg-gray-50 rounded-lg p-4 border border-gray-200 cursor-pointer hover:bg-gray-100 transition-colors"
+                  >
+                    <div className="flex items-start justify-between mb-2">
+                      <h3 className="font-medium text-gray-800">{fragment.title}</h3>
+                      {fragment.distance !== undefined && (
+                        <span className="text-xs text-gray-500 bg-white px-2 py-1 rounded">
+                          {Math.round(fragment.distance)}m
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-sm text-gray-600 line-clamp-2 mb-2">
+                      {fragment.content.substring(0, 120)}...
+                    </p>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs px-2 py-1 rounded-full bg-blue-100 text-blue-700">
+                        {fragment.category}
+                      </span>
+                      <span className="text-xs text-gray-500">{fragment.locationName}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Profile View - Mobile profile tab */}
+        {isMobile && activeTab === "profile" && (
+          <div className="absolute inset-0 z-10 bg-white overflow-y-auto">
+            <div className="p-4">
+              <div className="text-center mb-6">
+                <div className="w-16 h-16 bg-gradient-to-br from-echo-blue to-echo-teal rounded-full mx-auto mb-3 flex items-center justify-center">
+                  <User className="text-white w-8 h-8" />
+                </div>
+                <h2 className="text-lg font-semibold text-gray-800">Explorer Profile</h2>
+                <p className="text-gray-600 text-sm">Story Fragment Discoverer</p>
+              </div>
+              
+              <div className="space-y-4">
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <h3 className="font-medium text-gray-800 mb-2">Discovery Stats</h3>
+                  <div className="grid grid-cols-2 gap-4 text-center">
+                    <div>
+                      <div className="text-2xl font-bold text-echo-blue">{fragments.length}</div>
+                      <div className="text-xs text-gray-600">Fragments Found</div>
+                    </div>
+                    <div>
+                      <div className="text-2xl font-bold text-echo-teal">{nearbyFragments.length}</div>
+                      <div className="text-xs text-gray-600">Nearby</div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <h3 className="font-medium text-gray-800 mb-2">Recent Activity</h3>
+                  <p className="text-sm text-gray-600">Your latest discoveries and contributions will appear here.</p>
+                </div>
+              </div>
+            </div>
+          </div>
         )}
 
         {/* Status Indicator - Desktop only */}

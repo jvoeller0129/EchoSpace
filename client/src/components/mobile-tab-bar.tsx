@@ -1,4 +1,4 @@
-import { MapPin, List, Compass, User } from "lucide-react";
+import { MapPin, List, Compass, User, Camera } from "lucide-react";
 
 interface MobileTabBarProps {
   activeTab: string;
@@ -7,8 +7,9 @@ interface MobileTabBarProps {
 
 const tabs = [
   { id: "map", label: "Map", icon: MapPin },
-  { id: "fragments", label: "Fragments", icon: List },
   { id: "discover", label: "Discover", icon: Compass },
+  { id: "ar", label: "AR View", icon: Camera },
+  { id: "fragments", label: "Fragments", icon: List },
   { id: "profile", label: "Profile", icon: User },
 ];
 
