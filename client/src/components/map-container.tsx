@@ -70,8 +70,6 @@ export default function MapContainer({
   // Update map content when fragments, location, or selection changes
   useEffect(() => {
     if (!mapInstanceRef.current) return;
-    
-    console.log("Map update triggered, fragments count:", fragments.length);
 
     import("leaflet").then((L) => {
       const map = mapInstanceRef.current;
@@ -83,9 +81,7 @@ export default function MapContainer({
       markersRef.current = [];
 
       // Add fragment markers
-      console.log("Adding fragments to map:", fragments);
       fragments.forEach((fragment) => {
-        console.log("Creating marker for:", fragment.title, fragment.latitude, fragment.longitude);
         const categoryColors: Record<string, string> = {
           story: "#F59E0B", // echo-amber
           memory: "#0F766E", // echo-teal
@@ -107,7 +103,6 @@ export default function MapContainer({
           className: 'fragment-marker'
         }).addTo(map);
 
-        console.log("Marker added to map:", marker, "at position:", [fragment.latitude, fragment.longitude]);
         markersRef.current.push(marker);
 
         marker.bindPopup(`
