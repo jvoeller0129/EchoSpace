@@ -309,10 +309,8 @@ export default function Home() {
         currentLocation={currentLocation}
       />
 
-      {/* Mobile Tab Bar */}
-      {isMobile && (
-        <MobileTabBar activeTab={activeTab} onTabChange={setActiveTab} />
-      )}
+      {/* Tab Bar - Always visible for AR access */}
+      <MobileTabBar activeTab={activeTab} onTabChange={setActiveTab} />
     </div>
   );
 }

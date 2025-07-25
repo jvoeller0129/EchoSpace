@@ -15,7 +15,7 @@ const tabs = [
 
 export default function MobileTabBar({ activeTab, onTabChange }: MobileTabBarProps) {
   return (
-    <nav className="bg-white border-t border-gray-200 md:hidden" data-testid="mobile-tab-bar">
+    <nav className="bg-white border-t border-gray-200" data-testid="mobile-tab-bar">
       <div className="flex">
         {tabs.map((tab) => {
           const IconComponent = tab.icon;
