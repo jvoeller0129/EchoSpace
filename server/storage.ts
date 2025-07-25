@@ -100,6 +100,18 @@ export class MemStorage implements IStorage {
         imageUrl: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400",
         tags: ["riverfront", "meditation", "students", "peace", "trail"],
         likes: 19
+      },
+      {
+        title: "Eternal Flame of Memory",
+        content: "The Kennedy Memorial Park holds more than just the president's legacy—it holds the collective memory of a community that believed in hope during America's darkest hours. The memorial flame flickers day and night, a beacon that has witnessed decades of visitors seeking solace and inspiration.\n\nI come here every November 22nd, like my grandfather did, and his father before him. Three generations drawn to this quiet corner of Morgantown where time seems suspended. The trees have grown taller since 1963, but the flame burns just as bright. Children play on the nearby equipment while their parents pause at the memorial, teaching them about service, sacrifice, and the power of dreams that outlive the dreamer.",
+        category: "memory",
+        latitude: 39.6267,
+        longitude: -79.9481,
+        locationName: "John F. Kennedy Memorial Park",
+        author: "Patricia W.",
+        imageUrl: "https://images.unsplash.com/photo-1573160813859-3c96259d6e96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400",
+        tags: ["memorial", "legacy", "generations", "hope", "community"],
+        likes: 31
       }
     ];
 
