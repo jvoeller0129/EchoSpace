@@ -69,14 +69,21 @@ export default function MapContainer({
 
   // Update map content when fragments, location, or selection changes
   useEffect(() => {
-    if (!mapInstanceRef.current) return;
+    if (!mapInstanceRef.current || !fragments.length) return;
 
     import("leaflet").then((L) => {
       const map = mapInstanceRef.current;
+      if (!map) return;
       
-      // Clear existing markers
+      // Clear existing markers safely
       markersRef.current.forEach(marker => {
-        map.removeLayer(marker);
+        try {
+          if (map.hasLayer(marker)) {
+            map.removeLayer(marker);
+          }
+        } catch (e) {
+          console.warn("Error removing marker:", e);
+        }
       });
       markersRef.current = [];
 
@@ -92,13 +99,23 @@ export default function MapContainer({
 
         const color = categoryColors[fragment.category] || "#6B7280";
         
+        // Log marker creation for debugging
+        if (fragment.locationName.includes("Edith")) {
+          console.log("Creating Edith Barill marker:", {
+            title: fragment.title,
+            coords: [fragment.latitude, fragment.longitude],
+            color: color,
+            category: fragment.category
+          });
+        }
+        
         const marker = L.circleMarker([fragment.latitude, fragment.longitude], {
-          radius: 12,
+          radius: 15,
           fillColor: color,
           color: "white",
-          weight: 3,
+          weight: 4,
           opacity: 1,
-          fillOpacity: 0.8,
+          fillOpacity: 0.9,
           stroke: true,
           className: 'fragment-marker'
         }).addTo(map);
@@ -157,6 +174,14 @@ export default function MapContainer({
 
         // Center map on user location
         map.setView([currentLocation.lat, currentLocation.lng], 16);
+      } else if (fragments.length > 0 && markersRef.current.length > 0) {
+        // If no user location, fit map to show all markers
+        try {
+          const group = new L.featureGroup(markersRef.current);
+          map.fitBounds(group.getBounds().pad(0.1));
+        } catch (e) {
+          console.warn("Error fitting bounds:", e);
+        }
       }
     });
   }, [fragments, currentLocation, selectedFragment]);
