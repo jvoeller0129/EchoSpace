@@ -26,8 +26,8 @@ export default function MapContainer({
     import("leaflet").then((L) => {
       // Initialize map only once
       const map = L.map(mapRef.current!, {
-        center: currentLocation || [40.7128, -74.0060], // Default to NYC
-        zoom: 15,
+        center: currentLocation || [39.6295, -79.9559], // Default to Morgantown, WV
+        zoom: 13,
       });
       
       mapInstanceRef.current = map;

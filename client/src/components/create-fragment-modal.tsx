@@ -52,8 +52,8 @@ export default function CreateFragmentModal({
       title: "",
       content: "",
       category: "",
-      latitude: currentLocation?.lat || 40.7128,
-      longitude: currentLocation?.lng || -74.0060,
+      latitude: currentLocation?.lat || 39.6295,
+      longitude: currentLocation?.lng || -79.9559,
       locationName: "",
       author: "",
       imageUrl: "",
@@ -87,8 +87,8 @@ export default function CreateFragmentModal({
   const onSubmit = (data: CreateFragmentForm) => {
     const fragmentData: InsertFragment = {
       ...data,
-      latitude: currentLocation?.lat || 40.7128,
-      longitude: currentLocation?.lng || -74.0060,
+      latitude: currentLocation?.lat || 39.6295,
+      longitude: currentLocation?.lng || -79.9559,
       locationName: data.locationName || "Unknown Location",
       author: data.author || "Anonymous",
       tags: data.tags ? data.tags.split(",").map((tag) => tag.trim()).filter(Boolean) : [],

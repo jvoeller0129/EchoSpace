@@ -30,40 +30,64 @@ export class MemStorage implements IStorage {
   private async initializeSampleData() {
     const sampleFragments: Omit<Fragment, 'id'>[] = [
       {
-        title: "The Forgotten Garden",
-        content: "Hidden behind the main library building, through a narrow gap between two ivy-covered walls, lies a garden that time forgot. The stone benches are weathered smooth by decades of students seeking refuge from their studies.\n\nLocal legend says that anyone who finds this place during their most difficult moments will discover exactly the peace they need. The garden seems to change with each visitor—sometimes wild and overgrown, sometimes perfectly manicured, always exactly what the soul requires.",
+        title: "The Mountaineer's Ghost",
+        content: "Every game day, students swear they see him before dawn—the original Mountaineer, still patrolling the sidelines of the old stadium. He appears as a shadowy figure in buckskin, rifle in hand, watching over his team one last time.\n\nThe legend started in 1963 when the first Mountaineer mascot, Boyd Chambers, passed away. Since then, dozens of students have reported seeing his spirit during big games, always appearing when the team needs him most. Some say if you're quiet enough at sunrise on the old field, you can still hear his victory yell echoing across the mountains.",
+        category: "lore",
+        latitude: 39.6395,
+        longitude: -79.9553,
+        locationName: "WVU Mountaineer Field",
+        author: "Jake W.",
+        imageUrl: "https://images.unsplash.com/photo-1508915830264-dc4bbfce2ad2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400",
+        tags: ["mountaineer", "spirit", "football", "tradition"],
+        likes: 34
+      },
+      {
+        title: "Coal Mine Memory",
+        content: "My grandfather worked these mines for thirty-seven years. Every morning he'd kiss my grandmother goodbye at this very spot, never knowing if he'd make it home. The mine closed in '92, but I still come here sometimes to remember his calloused hands and the way he'd hum old hymns while washing the coal dust from his face.\n\nThis place holds the memories of a thousand families, the weight of dreams deferred and hopes carried deep underground. The mountain remembers every man who gave his back to feed his family.",
+        category: "memory",
+        latitude: 39.6284,
+        longitude: -79.9723,
+        locationName: "Star City Mine Entrance",
+        author: "Mary Beth K.",
+        imageUrl: "https://images.unsplash.com/photo-1574263867128-fbec874c4443?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400",
+        tags: ["coal-mining", "family", "heritage", "sacrifice"],
+        likes: 18
+      },
+      {
+        title: "The Monongahela River Crossing",
+        content: "Before the bridges, before the ferries, the Cherokee had a sacred crossing here. My great-grandmother told stories of how the river spirits would test travelers—some would find the water shallow and welcoming, others would face rushing rapids that seemed to appear from nowhere.\n\nEven now, kayakers and fishermen report strange currents that don't match the weather, as if the old spirits still guard this bend in the river. On misty mornings, you can almost see the ancient footpaths leading down to the water's edge.",
+        category: "history",
+        latitude: 39.6497,
+        longitude: -79.9647,
+        locationName: "Monongahela River Bridge",
+        author: "Robert S.",
+        imageUrl: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400",
+        tags: ["native-american", "river", "sacred", "crossing"],
+        likes: 27
+      },
+      {
+        title: "The Forest Cathedral",
+        content: "Deep in Coopers Rock, there's a grove where the hemlocks grow in a perfect circle. Local hikers call it the Cathedral—the way the light filters through the canopy creates natural stained glass windows, and the acoustics are so perfect that whispers carry like prayers.\n\nI discovered this place during my darkest semester at WVU. Something about the ancient trees and the way they've stood sentinel for centuries put my problems into perspective. It's become my sanctuary, a place where the forest listens and somehow, things make sense again.",
         category: "story",
-        latitude: 40.7128,
-        longitude: -74.0060,
-        locationName: "Central Library, Back Garden",
-        author: "Sarah M.",
-        imageUrl: "https://images.unsplash.com/photo-1501594907352-04cda38ebc29?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400",
-        tags: ["peaceful", "hidden", "students", "sanctuary"],
-        likes: 12
+        latitude: 39.6531,
+        longitude: -79.7964,
+        locationName: "Coopers Rock State Forest",
+        author: "Amanda L.",
+        imageUrl: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400",
+        tags: ["forest", "cathedral", "healing", "nature"],
+        likes: 15
       },
       {
-        title: "City Lights Memory",
-        content: "The first time I saw the skyline from this exact spot, I knew this city would become my home. It was during a late evening walk, when the lights were just beginning to twinkle against the dusky sky. Standing here now, years later, I can still feel that same sense of possibility and wonder.",
-        category: "memory",
-        latitude: 40.7130,
-        longitude: -74.0065,
-        locationName: "Riverside Park Overlook",
-        author: "Marcus T.",
-        imageUrl: "https://images.unsplash.com/photo-1514565131-fce0801e5785?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400",
-        tags: ["skyline", "evening", "first-time", "inspiration"],
-        likes: 8
-      },
-      {
-        title: "First Date Bench",
-        content: "Where everything began on a rainy Tuesday afternoon. We had planned to meet at the coffee shop, but it was so crowded we ended up sitting on this bench under my umbrella, talking for hours. Now, five years later, we still come back here every anniversary to remember how it all started.",
-        category: "memory",
-        latitude: 40.7125,
-        longitude: -74.0055,
-        locationName: "Washington Square Park",
-        author: "Elena R.",
-        imageUrl: "https://images.unsplash.com/photo-1541746972996-4e0b0f93e586?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400",
-        tags: ["romance", "anniversary", "rain", "beginning"],
-        likes: 23
+        title: "High Street Midnight Mystery",
+        content: "Every night at exactly 11:47 PM, a woman in a blue dress walks from the old Morgantown Hotel to the courthouse steps. She never varies her route, never acknowledges anyone who tries to speak to her. Local bartenders and late-night workers have been seeing her for decades.\n\nThe mystery deepened when someone found a 1953 newspaper article about a woman named Helen Morrison who disappeared on her wedding night from that very hotel. She was last seen wearing a blue dress, walking toward the courthouse to elope. Some say she's still looking for her groom. Others think she's trying to warn people about something that happened that night.",
+        category: "mystery",
+        latitude: 39.6295,
+        longitude: -79.9559,
+        locationName: "High Street Historic District",
+        author: "Detective Mike R.",
+        imageUrl: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400",
+        tags: ["ghost", "mystery", "downtown", "wedding"],
+        likes: 42
       }
     ];
 
