@@ -4,6 +4,9 @@
 
 Echo Space is a location-based storytelling platform that allows users to discover and share location-specific stories, memories, and experiences. The application combines an interactive map interface with user-generated content to create a rich tapestry of place-based narratives.
 
+**Current Features**: 15 narrative fragments across Morgantown, WV with map-based discovery
+**AR Vision**: Real-time augmented reality fragment discovery and creation through mobile camera
+
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
@@ -121,3 +124,27 @@ Currently uses a basic session-based approach with potential for expansion:
 - **Horizontal Scaling**: Stateless architecture supports multiple server instances
 
 The application is designed to scale from local development to production deployment while maintaining a simple, maintainable codebase focused on the core user experience of discovering and sharing location-based stories.
+
+## Future AR Integration Plans
+
+### AR Fragment Discovery
+- **Camera View**: Real-time fragment overlay on camera feed when pointing phone at locations
+- **Distance Indicators**: Visual range indicators showing fragment proximity and direction
+- **3D Anchoring**: Fragments appear anchored to specific real-world locations
+- **Progressive Discovery**: Fragments become visible as users get within trigger radius
+
+### AR Fragment Creation
+- **Point and Drop**: Tap screen to place new fragment at exact camera target location
+- **Visual Placement**: Preview fragment position before confirming placement
+- **Context Capture**: Auto-capture location photo and GPS coordinates
+- **Immersive Authoring**: Write fragment content while seeing placement in AR
+
+### Technical Approach Options
+1. **8th Wall WebAR + Lightship VPS**: Production-ready with centimeter accuracy
+2. **AR.js + A-Frame**: Free MVP approach with GPS-based positioning  
+3. **WebXR Device API**: Future-proofed native browser AR support
+
+### Implementation Priority
+- Phase 1: AR.js prototype for GPS-based fragment discovery
+- Phase 2: Enhanced creation interface with AR placement preview
+- Phase 3: Lightship VPS integration for precise world anchoring
