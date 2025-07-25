@@ -109,10 +109,14 @@ function ARView({
           setError('Video playback error');
         };
         
-        // Force set AR active after short delay if stream is assigned
+        // Force set AR active immediately when camera stream is available
+        console.log('Setting AR active immediately after camera access');
+        setIsARActive(true);
+        
+        // Also try after a short delay as backup
         setTimeout(() => {
           if (videoRef.current && videoRef.current.srcObject) {
-            console.log('Video element has stream, setting AR active');
+            console.log('Video element has stream, ensuring AR is active');
             console.log('Video readyState:', videoRef.current.readyState);
             console.log('Video paused:', videoRef.current.paused);
             setIsARActive(true);
@@ -124,7 +128,7 @@ function ARView({
               });
             }
           }
-        }, 500);
+        }, 100);
       }
 
       // Setup device orientation
@@ -148,6 +152,7 @@ function ARView({
       
       setError(errorMessage);
       setIsLoading(false);
+      setIsARActive(false);
     }
   };
 
