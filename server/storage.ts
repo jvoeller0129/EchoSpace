@@ -30,6 +30,18 @@ export class MemStorage implements IStorage {
   private async initializeSampleData() {
     const sampleFragments: Omit<Fragment, 'id'>[] = [
       {
+        title: "AR Test Fragment - Echo Space",
+        content: "This is a test fragment placed exactly at coordinates 39.6545691, -79.9865098 for AR testing. When you point your camera around this location, you should be able to discover this fragment through the Echo Space AR interface. This proves the location-based discovery system is working correctly with real GPS coordinates and camera integration.",
+        category: "mystery",
+        latitude: 39.6545691,
+        longitude: -79.9865098,
+        locationName: "AR Test Location",
+        author: "AR System",
+        imageUrl: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400",
+        tags: ["ar-test", "gps", "discovery", "echo-space"],
+        likes: 1
+      },
+      {
         title: "The Mountaineer's Ghost",
         content: "Every game day, students swear they see him before dawn—the original Mountaineer, still patrolling the sidelines of the old stadium. He appears as a shadowy figure in buckskin, rifle in hand, watching over his team one last time.\n\nThe legend started in 1963 when the first Mountaineer mascot, Boyd Chambers, passed away. Since then, dozens of students have reported seeing his spirit during big games, always appearing when the team needs him most. Some say if you're quiet enough at sunrise on the old field, you can still hear his victory yell echoing across the mountains.",
         category: "lore",
