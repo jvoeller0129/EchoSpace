@@ -1,0 +1,164 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: hsl(0, 0%, 100%);
+  --foreground: hsl(20, 14.3%, 4.1%);
+  --muted: hsl(60, 4.8%, 95.9%);
+  --muted-foreground: hsl(25, 5.3%, 44.7%);
+  --popover: hsl(0, 0%, 100%);
+  --popover-foreground: hsl(20, 14.3%, 4.1%);
+  --card: hsl(0, 0%, 100%);
+  --card-foreground: hsl(20, 14.3%, 4.1%);
+  --border: hsl(20, 5.9%, 90%);
+  --input: hsl(20, 5.9%, 90%);
+  --primary: hsl(207, 90%, 54%);
+  --primary-foreground: hsl(211, 100%, 99%);
+  --secondary: hsl(60, 4.8%, 95.9%);
+  --secondary-foreground: hsl(24, 9.8%, 10%);
+  --accent: hsl(60, 4.8%, 95.9%);
+  --accent-foreground: hsl(24, 9.8%, 10%);
+  --destructive: hsl(0, 84.2%, 60.2%);
+  --destructive-foreground: hsl(60, 9.1%, 97.8%);
+  --ring: hsl(20, 14.3%, 4.1%);
+  --radius: 0.5rem;
+  
+  /* Echo Space custom colors */
+  --echo-blue: hsl(222, 76%, 32%);
+  --echo-teal: hsl(176, 88%, 23%);
+  --echo-amber: hsl(43, 96%, 49%);
+  --echo-gray: hsl(215, 25%, 27%);
+  --echo-light: hsl(210, 40%, 98%);
+}
+
+.dark {
+  --background: hsl(240, 10%, 3.9%);
+  --foreground: hsl(0, 0%, 98%);
+  --muted: hsl(240, 3.7%, 15.9%);
+  --muted-foreground: hsl(240, 5%, 64.9%);
+  --popover: hsl(240, 10%, 3.9%);
+  --popover-foreground: hsl(0, 0%, 98%);
+  --card: hsl(240, 10%, 3.9%);
+  --card-foreground: hsl(0, 0%, 98%);
+  --border: hsl(240, 3.7%, 15.9%);
+  --input: hsl(240, 3.7%, 15.9%);
+  --primary: hsl(207, 90%, 54%);
+  --primary-foreground: hsl(211, 100%, 99%);
+  --secondary: hsl(240, 3.7%, 15.9%);
+  --secondary-foreground: hsl(0, 0%, 98%);
+  --accent: hsl(240, 3.7%, 15.9%);
+  --accent-foreground: hsl(0, 0%, 98%);
+  --destructive: hsl(0, 62.8%, 30.6%);
+  --destructive-foreground: hsl(0, 0%, 98%);
+  --ring: hsl(240, 4.9%, 83.9%);
+  --radius: 0.5rem;
+  
+  /* Echo Space dark mode colors */
+  --echo-blue: hsl(222, 76%, 45%);
+  --echo-teal: hsl(176, 88%, 35%);
+  --echo-amber: hsl(43, 96%, 60%);
+  --echo-gray: hsl(215, 25%, 80%);
+  --echo-light: hsl(240, 10%, 5%);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .echo-blue {
+    color: var(--echo-blue);
+  }
+  
+  .bg-echo-blue {
+    background-color: var(--echo-blue);
+  }
+  
+  .echo-teal {
+    color: var(--echo-teal);
+  }
+  
+  .bg-echo-teal {
+    background-color: var(--echo-teal);
+  }
+  
+  .echo-amber {
+    color: var(--echo-amber);
+  }
+  
+  .bg-echo-amber {
+    background-color: var(--echo-amber);
+  }
+  
+  .echo-gray {
+    color: var(--echo-gray);
+  }
+  
+  .bg-echo-gray {
+    background-color: var(--echo-gray);
+  }
+  
+  .bg-echo-light {
+    background-color: var(--echo-light);
+  }
+}
+
+/* Leaflet map styling */
+.leaflet-container {
+  font-family: inherit;
+}
+
+.leaflet-popup-content-wrapper {
+  border-radius: 8px;
+}
+
+.leaflet-popup-content {
+  margin: 8px 12px;
+  font-size: 14px;
+}
+
+/* Custom marker animations */
+@keyframes pulse-marker {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.marker-pulse {
+  animation: pulse-marker 2s infinite;
+}
+
+/* Fragment panel animations */
+.fragment-panel-enter {
+  transform: translateY(100%);
+}
+
+.fragment-panel-enter-active {
+  transform: translateY(0);
+  transition: transform 300ms ease-out;
+}
+
+.fragment-panel-exit {
+  transform: translateY(0);
+}
+
+.fragment-panel-exit-active {
+  transform: translateY(100%);
+  transition: transform 300ms ease-in;
+}
