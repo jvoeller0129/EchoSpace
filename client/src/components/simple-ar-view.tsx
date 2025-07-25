@@ -4,9 +4,11 @@ import { Button } from "@/components/ui/button";
 
 interface SimpleARViewProps {
   onClose: () => void;
+  fragments?: any[];
+  currentLocation?: { lat: number; lng: number } | null;
 }
 
-export function SimpleARView({ onClose }: SimpleARViewProps) {
+export function SimpleARView({ onClose, fragments = [], currentLocation }: SimpleARViewProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isActive, setIsActive] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -95,6 +97,17 @@ export function SimpleARView({ onClose }: SimpleARViewProps) {
           updateDebug();
         };
         
+        // Try to force video play
+        setTimeout(() => {
+          if (video.paused) {
+            video.play().then(() => {
+              console.log("Video play successful after delay");
+            }).catch(e => {
+              console.log("Video play failed:", e.message);
+            });
+          }
+        }, 500);
+        
         // Regular debug updates
         const debugInterval = setInterval(updateDebug, 1000);
         
@@ -180,11 +193,23 @@ export function SimpleARView({ onClose }: SimpleARViewProps) {
         </button>
       </div>
       
-      {/* Large center indicator */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div className="bg-yellow-400 text-black px-8 py-4 rounded-2xl font-bold text-2xl shadow-xl">
-          AR VIEW ACTIVE
+      {/* Fragment discovery info */}
+      <div className="absolute top-20 left-4 right-4 text-center">
+        <div className="bg-white/90 backdrop-blur-sm rounded-lg p-3 shadow-lg">
+          <p className="text-sm font-medium text-gray-800">
+            🔍 Looking for story fragments...
+          </p>
+          <p className="text-xs text-gray-600 mt-1">
+            {currentLocation ? `Found ${fragments.length} fragments nearby` : 'Enable GPS to discover fragments'}
+          </p>
         </div>
+      </div>
+      
+      {/* Center crosshair */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <div className="w-8 h-8 border-2 border-white rounded-full opacity-50"></div>
+        <div className="absolute w-4 h-0.5 bg-white opacity-50"></div>
+        <div className="absolute w-0.5 h-4 bg-white opacity-50"></div>
       </div>
       
       {/* Debug Info */}

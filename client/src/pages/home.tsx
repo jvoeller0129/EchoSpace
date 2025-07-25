@@ -320,7 +320,11 @@ export default function Home() {
 
       {/* Simple AR View Test */}
       {showSimpleAR && (
-        <SimpleARView onClose={() => setShowSimpleAR(false)} />
+        <SimpleARView 
+          onClose={() => setShowSimpleAR(false)}
+          fragments={fragments}
+          currentLocation={currentLocation}
+        />
       )}
     </div>
   );
