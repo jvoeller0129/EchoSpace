@@ -109,18 +109,22 @@ function ARView({
           setError('Video playback error');
         };
         
-        // Try to play immediately as well
+        // Force set AR active after short delay if stream is assigned
         setTimeout(() => {
-          if (videoRef.current && videoRef.current.readyState >= 2) {
-            console.log('Attempting immediate video play...');
-            videoRef.current.play().then(() => {
-              console.log('Immediate video play succeeded');
-              setIsARActive(true);
-            }).catch(error => {
-              console.log('Immediate play failed, waiting for metadata:', error.message);
-            });
+          if (videoRef.current && videoRef.current.srcObject) {
+            console.log('Video element has stream, setting AR active');
+            console.log('Video readyState:', videoRef.current.readyState);
+            console.log('Video paused:', videoRef.current.paused);
+            setIsARActive(true);
+            
+            // Try to play if not already playing
+            if (videoRef.current.paused) {
+              videoRef.current.play().catch(error => {
+                console.log('Play attempt failed:', error.message);
+              });
+            }
           }
-        }, 100);
+        }, 500);
       }
 
       // Setup device orientation
@@ -331,6 +335,9 @@ function ARView({
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4 max-w-sm text-center">
           <p className="text-blue-700 text-sm">
             Status: {isLoading ? 'Loading...' : isARActive ? 'Camera Active' : 'Ready to start'}
+          </p>
+          <p className="text-blue-600 text-xs mt-1">
+            AR State: {isARActive.toString()} | Loading: {isLoading.toString()}
           </p>
         </div>
         
