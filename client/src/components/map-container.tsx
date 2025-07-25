@@ -99,15 +99,7 @@ export default function MapContainer({
 
         const color = categoryColors[fragment.category] || "#6B7280";
         
-        // Log marker creation for debugging
-        if (fragment.locationName.includes("Edith")) {
-          console.log("Creating Edith Barill marker:", {
-            title: fragment.title,
-            coords: [fragment.latitude, fragment.longitude],
-            color: color,
-            category: fragment.category
-          });
-        }
+
         
         const marker = L.circleMarker([fragment.latitude, fragment.longitude], {
           radius: 15,
@@ -177,7 +169,7 @@ export default function MapContainer({
       } else if (fragments.length > 0 && markersRef.current.length > 0) {
         // If no user location, fit map to show all markers
         try {
-          const group = new L.featureGroup(markersRef.current);
+          const group = new (L as any).featureGroup(markersRef.current);
           map.fitBounds(group.getBounds().pad(0.1));
         } catch (e) {
           console.warn("Error fitting bounds:", e);

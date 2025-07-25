@@ -112,6 +112,90 @@ export class MemStorage implements IStorage {
         imageUrl: "https://images.unsplash.com/photo-1573160813859-3c96259d6e96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400",
         tags: ["memorial", "legacy", "generations", "hope", "community"],
         likes: 31
+      },
+      {
+        title: "The Sheriff's Last Stand",
+        content: "The Metropolitan Theatre holds more than just entertainment memories—it witnessed one of Morgantown's most dramatic moments in 1924, its opening year. When the notorious Hatfield gang tried to rob the box office during a sold-out show, Sheriff Thomas McKinley made his final stand right on these marble steps.\n\nLegend says you can still hear phantom gunshots echoing through the lobby on quiet Tuesday nights. The theatre's ushers refuse to work alone after 10 PM, claiming they've seen a figure in a long coat and badge patrolling the balcony. Some say it's Sheriff McKinley, still protecting theatergoers from beyond. Whether you believe in ghosts or not, the Metropolitan's grand architecture and blood-red velvet seats carry the weight of nearly a century of drama—both on stage and off.",
+        category: "lore",
+        latitude: 39.6298,
+        longitude: -79.9547,
+        locationName: "Metropolitan Theatre",
+        author: "Harold T.",
+        imageUrl: "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400",
+        tags: ["theatre", "sheriff", "gunfight", "haunted", "1924"],
+        likes: 28
+      },
+      {
+        title: "Barney's Big Break",
+        content: "Right here on High Street, a young Don Knotts used to practice his comedy routines on the courthouse steps, entertaining anyone willing to listen. Local shop owners would give him quarters just to see his nervous, twitchy character that would later become Barney Fife on The Andy Griffith Show.\n\nThe bronze statue captures him mid-performance, and if you look closely at the courthouse steps where he used to practice, you can see worn spots in the stone from decades of aspiring performers following in his footsteps. Every year on his birthday, local comedians gather here for 'Knotts Night,' sharing jokes and stories. It's become a tradition that proves talent can bloom anywhere—even on small-town courthouse steps.",
+        category: "history",
+        latitude: 39.6297,
+        longitude: -79.9549,
+        locationName: "Don Knotts Statue & High Street",
+        author: "Betty L.",
+        imageUrl: "https://images.unsplash.com/photo-1594736797933-d0d7e0b7b0c7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400",
+        tags: ["don-knotts", "comedy", "hometown", "courthouse", "statue"],
+        likes: 45
+      },
+      {
+        title: "Echoes of Pearl Harbor",
+        content: "The USS West Virginia mast stands as more than a memorial—it's a time portal. When the wind hits it just right, you can almost hear the battle cries from December 7th, 1941. Students walking past often stop, suddenly feeling the weight of history pressing down on them.\n\nMy grandfather served on destroyers in the Pacific and would visit this memorial every Veterans Day until he passed. He told me that touching the steel still warm from the Hawaiian sun was like shaking hands with the past. During thunderstorms, when lightning illuminates the mast against WVU's towers, you remember that some battles are never really over—they just become part of the landscape, waiting to teach new generations about sacrifice and honor.",
+        category: "memory",
+        latitude: 39.6344,
+        longitude: -79.9553,
+        locationName: "USS West Virginia Memorial - WVU Campus",
+        author: "James R.",
+        imageUrl: "https://images.unsplash.com/photo-1494774157365-9e04c6720e47?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400",
+        tags: ["pearl-harbor", "memorial", "veterans", "wvu", "sacrifice"],
+        likes: 52
+      },
+      {
+        title: "Iron Dreams and Furnace Ghosts",
+        content: "The Henry Clay Iron Furnace still glows on winter nights—not from fire, but from the spirits of the ironworkers who died in the blast of 1889. Local historians say it was the result of cutting safety corners to meet production demands, but the workers' families knew the truth: the mountain itself was angry about being hollowed out.\n\nUrban explorers report hearing hammers striking anvils and the wheeze of old bellows when the fog rolls in. The furnace walls are blackened not just from iron production, but from the intensity of lives lived at the edge of survival. This industrial cathedral reminds us that Morgantown was built on the backs of men who turned mountains into steel, leaving their ghosts to guard the ruins of American industry.",
+        category: "lore",
+        latitude: 39.6201,
+        longitude: -79.9234,
+        locationName: "Henry Clay Iron Furnace",
+        author: "Marcus D.",
+        imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400",
+        tags: ["iron-furnace", "industrial", "ghosts", "workers", "history"],
+        likes: 33
+      },
+      {
+        title: "The Wharf District Renaissance",
+        content: "Twenty years ago, this waterfront was abandoned warehouses and broken dreams. Then something magical happened—the community decided to reclaim the riverbank. I watched my neighborhood transform from industrial wasteland to the beating heart of modern Morgantown.\n\nThe Waterfront Place Hotel rises like a phoenix from the old shipping docks, and the Caperton Trail connects stories spanning generations. Every morning, I jog past where my great-uncle used to load coal barges, now transformed into outdoor dining and art installations. The Wharf District proves that cities, like rivers, keep flowing forward. What was once the domain of industry is now the playground of possibility—a testament to Morgantown's ability to reinvent itself while honoring its past.",
+        category: "story",
+        latitude: 39.6288,
+        longitude: -79.9601,
+        locationName: "Wharf District & Waterfront Place",
+        author: "Rosa M.",
+        imageUrl: "https://images.unsplash.com/photo-1544966503-7cc1787dfab8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400",
+        tags: ["wharf-district", "revitalization", "caperton-trail", "waterfront", "transformation"],
+        likes: 41
+      },
+      {
+        title: "Giants on the Hardwood",
+        content: "Jerry West and Hot Rod Hundley aren't just bronze statues—they're guardians of basketball dreams. Every kid in Morgantown has shot imaginary game-winners while these legends watched from their pedestals. The statues capture more than athletic greatness; they embody the belief that small-town kids can conquer the world.\n\nDuring March Madness, fans leave offerings at their bases: lucky pennies, old ticket stubs, handwritten prayers for WVU victories. Jerry's statue shows him in that perfect shooting form that earned him the NBA logo silhouette, while Hot Rod's captures his theatrical flair. These bronze titans remind us that greatness isn't about where you come from—it's about how high you're willing to reach from whatever ground you're standing on.",
+        category: "memory",
+        latitude: 39.6341,
+        longitude: -79.9531,
+        locationName: "Jerry West & Hot Rod Hundley Statues - WVU",
+        author: "Coach Tommy K.",
+        imageUrl: "https://images.unsplash.com/photo-1546519638-68e109498ffc?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400",
+        tags: ["jerry-west", "hot-rod-hundley", "basketball", "wvu", "legends"],
+        likes: 67
+      },
+      {
+        title: "Art in the Evansdale Hills",
+        content: "The WVU Art Museum holds secrets in every gallery. There's a painting on the third floor—'Mountain Morning' by an unknown artist—that changes with the weather. On sunny days, the painted mist seems to lift from the canvas. During storms, the mountain appears more ominous, almost alive.\n\nCurators have theories, but no explanations. The painting was donated anonymously in 1987 with a note: 'For those who understand that art and land are one.' Graduate students often discover their thesis topics just by sitting quietly with this piece. It's as if the mountain itself is teaching them about the connection between place and creativity. In a state where the landscape shapes the soul, this museum proves that art doesn't just hang on walls—it breathes with the mountains themselves.",
+        category: "mystery",
+        latitude: 39.6398,
+        longitude: -79.9678,
+        locationName: "WVU Art Museum - Evansdale Campus",
+        author: "Dr. Elena V.",
+        imageUrl: "https://images.unsplash.com/photo-1541961017774-22349e4a1262?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400",
+        tags: ["art-museum", "mystery-painting", "evansdale", "wvu", "supernatural"],
+        likes: 29
       }
     ];
 
