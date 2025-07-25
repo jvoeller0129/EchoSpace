@@ -14,7 +14,19 @@ export function SimpleARView({ onClose }: SimpleARViewProps) {
 
   const startCamera = async () => {
     console.log("=== SIMPLE AR VIEW START ===");
+    setError(null);
+    
     try {
+      // Stop any existing streams first
+      if (videoRef.current?.srcObject) {
+        const existingStream = videoRef.current.srcObject as MediaStream;
+        existingStream.getTracks().forEach(track => track.stop());
+        videoRef.current.srcObject = null;
+        console.log("Stopped existing camera stream");
+        // Wait a moment for cleanup
+        await new Promise(resolve => setTimeout(resolve, 500));
+      }
+
       if (!navigator.mediaDevices?.getUserMedia) {
         throw new Error("Camera not supported");
       }
@@ -23,8 +35,8 @@ export function SimpleARView({ onClose }: SimpleARViewProps) {
       const stream = await navigator.mediaDevices.getUserMedia({
         video: {
           facingMode: 'environment',
-          width: { ideal: 1920, min: 640 },
-          height: { ideal: 1080, min: 480 }
+          width: { ideal: 640, max: 1280 },
+          height: { ideal: 480, max: 720 }
         }
       });
 
@@ -32,29 +44,27 @@ export function SimpleARView({ onClose }: SimpleARViewProps) {
       
       if (videoRef.current) {
         const video = videoRef.current;
-        console.log("Assigning stream to video element");
+        console.log("Setting up video element");
         
-        // Set video properties
+        // Clear any existing source
+        video.srcObject = null;
+        
+        // Set video properties before assigning stream
         video.muted = true;
         video.autoplay = true;
         video.playsInline = true;
+        video.controls = false;
         video.setAttribute('webkit-playsinline', 'true');
+        video.setAttribute('playsinline', 'true');
         
-        // Assign stream
+        console.log("Assigning stream to video element");
         video.srcObject = stream;
         
-        // Force play
-        try {
-          await video.play();
-          console.log("Video playing successfully");
-          setIsActive(true);
-        } catch (playError) {
-          console.error("Video play failed:", playError);
-          // Still set active since we have the stream
-          setIsActive(true);
-        }
-
-        // Update debug info
+        // Set active immediately
+        setIsActive(true);
+        console.log("AR View activated");
+        
+        // Update debug info function
         const updateDebug = () => {
           setDebugInfo({
             readyState: video.readyState,
@@ -66,26 +76,53 @@ export function SimpleARView({ onClose }: SimpleARViewProps) {
           });
         };
 
+        // Initial debug update
         updateDebug();
-        video.onloadedmetadata = updateDebug;
-        video.oncanplay = updateDebug;
         
-        setInterval(updateDebug, 1000);
+        // Set up event listeners
+        video.onloadedmetadata = () => {
+          console.log("Video metadata loaded");
+          updateDebug();
+        };
+        
+        video.oncanplay = () => {
+          console.log("Video can play");
+          updateDebug();
+        };
+        
+        video.onplay = () => {
+          console.log("Video started playing");
+          updateDebug();
+        };
+        
+        // Regular debug updates
+        const debugInterval = setInterval(updateDebug, 1000);
+        
+        // Cleanup interval on component unmount
+        setTimeout(() => clearInterval(debugInterval), 30000);
       }
 
     } catch (err) {
       console.error("Camera error:", err);
-      setError(err instanceof Error ? err.message : "Camera access failed");
+      const errorMsg = err instanceof Error ? err.message : "Camera access failed";
+      setError(errorMsg);
+      console.log("Full error details:", err);
     }
   };
 
   const stopCamera = () => {
+    console.log("Stopping camera...");
     if (videoRef.current?.srcObject) {
       const stream = videoRef.current.srcObject as MediaStream;
-      stream.getTracks().forEach(track => track.stop());
+      stream.getTracks().forEach(track => {
+        track.stop();
+        console.log("Stopped track:", track.kind, track.label);
+      });
       videoRef.current.srcObject = null;
     }
     setIsActive(false);
+    setError(null);
+    setDebugInfo({});
     onClose();
   };
 
