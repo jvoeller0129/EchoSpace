@@ -3,17 +3,18 @@ import { MapPin, List, Compass, User, Camera } from "lucide-react";
 interface MobileTabBarProps {
   activeTab: string;
   onTabChange: (tab: string) => void;
+  onARTest?: () => void;
 }
 
 const tabs = [
   { id: "map", label: "Map", icon: MapPin },
   { id: "discover", label: "Discover", icon: Compass },
-  { id: "ar", label: "AR View", icon: Camera },
+  { id: "ar", label: "Test AR", icon: Camera },
   { id: "fragments", label: "Fragments", icon: List },
   { id: "profile", label: "Profile", icon: User },
 ];
 
-export default function MobileTabBar({ activeTab, onTabChange }: MobileTabBarProps) {
+export default function MobileTabBar({ activeTab, onTabChange, onARTest }: MobileTabBarProps) {
   return (
     <nav className="bg-white border-t border-gray-200" data-testid="mobile-tab-bar">
       <div className="flex">
@@ -24,7 +25,7 @@ export default function MobileTabBar({ activeTab, onTabChange }: MobileTabBarPro
           return (
             <button
               key={tab.id}
-              onClick={() => onTabChange(tab.id)}
+              onClick={() => tab.id === 'ar' && onARTest ? onARTest() : onTabChange(tab.id)}
               className="flex-1 py-3 px-4 text-center group"
               data-testid={`button-tab-${tab.id}`}
             >

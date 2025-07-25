@@ -6,6 +6,7 @@ import DiscoveryPanel from "@/components/discovery-panel";
 import FragmentDetailPanel from "@/components/fragment-detail-panel";
 import CreateFragmentModal from "@/components/create-fragment-modal";
 import { ARView } from "@/components/ar-view";
+import { SimpleARView } from "@/components/simple-ar-view";
 import MobileTabBar from "@/components/mobile-tab-bar";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { MapPin, User, Navigation, Camera } from "lucide-react";
@@ -19,6 +20,7 @@ export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [activeTab, setActiveTab] = useState("map");
+  const [showSimpleAR, setShowSimpleAR] = useState(false);
   const isMobile = useIsMobile();
 
   // Fetch fragments based on current filters
@@ -121,12 +123,12 @@ export default function Home() {
             {/* AR Button - Desktop only */}
             {!isMobile && (
               <button
-                onClick={() => setActiveTab("ar")}
+                onClick={() => setShowSimpleAR(true)}
                 className="flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600"
                 data-testid="button-ar-view"
               >
                 <Camera className="w-4 h-4" />
-                <span className="hidden sm:inline">AR View</span>
+                <span className="hidden sm:inline">Test AR</span>
               </button>
             )}
 
@@ -310,7 +312,16 @@ export default function Home() {
       />
 
       {/* Tab Bar - Always visible for AR access */}
-      <MobileTabBar activeTab={activeTab} onTabChange={setActiveTab} />
+      <MobileTabBar 
+        activeTab={activeTab} 
+        onTabChange={setActiveTab}
+        onARTest={() => setShowSimpleAR(true)}
+      />
+
+      {/* Simple AR View Test */}
+      {showSimpleAR && (
+        <SimpleARView onClose={() => setShowSimpleAR(false)} />
+      )}
     </div>
   );
 }
