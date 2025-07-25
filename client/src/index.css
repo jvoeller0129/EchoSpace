@@ -113,6 +113,8 @@
 /* Leaflet map styling */
 .leaflet-container {
   font-family: inherit;
+  height: 100% !important;
+  width: 100% !important;
 }
 
 .leaflet-popup-content-wrapper {
@@ -122,6 +124,20 @@
 .leaflet-popup-content {
   margin: 8px 12px;
   font-size: 14px;
+}
+
+/* Fragment marker styling */
+.fragment-marker {
+  z-index: 1000 !important;
+}
+
+/* Ensure map tiles load properly */
+.leaflet-tile {
+  image-rendering: -webkit-optimize-contrast;
+}
+
+.leaflet-tile-container {
+  transform: translate3d(0,0,0);
 }
 
 /* Custom marker animations */

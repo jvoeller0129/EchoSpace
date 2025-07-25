@@ -24,18 +24,38 @@ export default function MapContainer({
 
     // Import Leaflet dynamically to avoid SSR issues
     import("leaflet").then((L) => {
+      // Fix for default marker icons
+      delete (L.Icon.Default.prototype as any)._getIconUrl;
+      L.Icon.Default.mergeOptions({
+        iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png',
+        iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png',
+        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
+      });
+
       // Initialize map only once
       const map = L.map(mapRef.current!, {
         center: currentLocation || [39.6295, -79.9559], // Default to Morgantown, WV
         zoom: 13,
+        zoomControl: true,
+        scrollWheelZoom: true,
+        doubleClickZoom: true,
+        touchZoom: true
       });
       
       mapInstanceRef.current = map;
 
-      // Add tile layer
+      // Add tile layer with proper options
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        maxZoom: 19,
+        tileSize: 256,
+        zoomOffset: 0,
       }).addTo(map);
+      
+      // Force map to resize after initialization
+      setTimeout(() => {
+        map.invalidateSize();
+      }, 100);
     });
 
     // Cleanup function
@@ -77,14 +97,17 @@ export default function MapContainer({
         const color = categoryColors[fragment.category] || "#6B7280";
         
         const marker = L.circleMarker([fragment.latitude, fragment.longitude], {
-          radius: 8,
+          radius: 12,
           fillColor: color,
           color: "white",
           weight: 3,
           opacity: 1,
-          fillOpacity: 0.9,
+          fillOpacity: 0.8,
+          stroke: true,
+          className: 'fragment-marker'
         }).addTo(map);
 
+        console.log("Marker added to map:", marker, "at position:", [fragment.latitude, fragment.longitude]);
         markersRef.current.push(marker);
 
         marker.bindPopup(`
