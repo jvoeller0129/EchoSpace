@@ -41,6 +41,8 @@ export function SimpleARView({ onClose }: SimpleARViewProps) {
       });
 
       console.log("Camera stream obtained:", stream.getTracks().length, "tracks");
+      console.log("Setting AR interface to active...");
+      setIsActive(true);
       
       if (videoRef.current) {
         const video = videoRef.current;
@@ -60,9 +62,7 @@ export function SimpleARView({ onClose }: SimpleARViewProps) {
         console.log("Assigning stream to video element");
         video.srcObject = stream;
         
-        // Set active immediately
-        setIsActive(true);
-        console.log("AR View activated");
+        console.log("Video element setup complete");
         
         // Update debug info function
         const updateDebug = () => {
@@ -153,8 +153,10 @@ export function SimpleARView({ onClose }: SimpleARViewProps) {
     );
   }
 
+  console.log("Rendering AR view - isActive:", isActive);
+  
   return (
-    <div className="fixed inset-0 bg-black z-50">
+    <div className="fixed inset-0 bg-black z-50" style={{ zIndex: 9999 }}>
       {/* Video Element */}
       <video
         ref={videoRef}
@@ -167,15 +169,22 @@ export function SimpleARView({ onClose }: SimpleARViewProps) {
       
       {/* Controls */}
       <div className="absolute top-4 left-4 right-4 flex justify-between items-start z-10">
-        <div className="bg-green-500 text-white px-3 py-2 rounded font-bold">
-          🎥 CAMERA ACTIVE
+        <div className="bg-green-500 text-white px-4 py-3 rounded-lg font-bold text-lg shadow-lg">
+          🎥 CAMERA WORKING
         </div>
         <button
           onClick={stopCamera}
-          className="bg-red-500 text-white p-2 rounded-full"
+          className="bg-red-500 text-white p-3 rounded-full shadow-lg"
         >
-          <X className="w-6 h-6" />
+          <X className="w-8 h-8" />
         </button>
+      </div>
+      
+      {/* Large center indicator */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <div className="bg-yellow-400 text-black px-8 py-4 rounded-2xl font-bold text-2xl shadow-xl">
+          AR VIEW ACTIVE
+        </div>
       </div>
       
       {/* Debug Info */}
